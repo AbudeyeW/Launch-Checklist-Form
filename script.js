@@ -29,11 +29,11 @@ window.addEventListener("load",function(){
       document.getElementById("copilotStatus").innerHTML = "Copilot "+copilotName.value+" is ready for Launch.";
       
       if(Number(fuelLevel.value)<10000){
-         document.getElementById("fuelStatus").innerHTML = "Fuel Level too low for launch: "+fuelLevel.value;
+         document.getElementById("fuelStatus").innerHTML = "Fuel Level too low for launch. It should be > 10000, it is: "+fuelLevel.value ;
          shuttleReady = false;
       }
       if(Number(cargoMass.value)>100000){
-         document.getElementById("cargoMass").innerHTML = "Cargo Mass too large: "+cargoMass.value;
+         document.getElementById("cargoMass").innerHTML = "Cargo Mass too large. It should be > 100000, it is: "+cargoMass.value;
          shuttleReady = false;
       }
       if(shuttleReady==false){
