@@ -6,6 +6,7 @@ window.addEventListener("load",function(){
 
    
    form.addEventListener("submit",function(event){
+      event.preventDefault();
          //Code for verifying all values are received
       let pilotName = document.querySelector("input[name=pilotName]");
       let copilotName = document.querySelector("input[name=copilotName]");
@@ -13,39 +14,40 @@ window.addEventListener("load",function(){
       let cargoMass = document.querySelector("input[name=cargoMass]");
       if(pilotName.value === ""|| copilotName.value===""|| fuelLevel ==="" || cargoMass ===""){
          alert("Hola! Remember all fields are required");
-         event.preventDefault();
       }
-      if(typeof pilotName.value !== "string" || typeof copilotName.value !== "string"){
+      else if(!isNaN(Number(pilotName.value)) || !isNaN(Number(copilotName.value))){
          alert("Hi! Please enter valid inputs. Make sure '"+pilotName.value +"' and '"+copilotName.value+ "' are both strings.");
-         event.preventDefault();
+
       }
-      if(isNaN(Number(fuelLevel.value)) || isNaN(Number(cargoMass.value))){
+      else if(isNaN(Number(fuelLevel.value)) || isNaN(Number(cargoMass.value))){
          alert("Hi! Please enter valid inputs. Make sure '"+fuelLevel.value +"' and '"+cargoMass.value+ "' are both numbers.");
-         event.preventDefault();
+
+      }
+      else{
+         let shuttleReady = true;
+         document.getElementById("pilotStatus").innerHTML = "Pilot "+pilotName.value+" is ready for Launch.";
+         document.getElementById("copilotStatus").innerHTML = "Copilot "+copilotName.value+" is ready for Launch.";
+         
+         if(Number(fuelLevel.value)<10000){
+            document.getElementById("fuelStatus").innerHTML = "Fuel Level too low for launch. It should be > 10000, it is: "+fuelLevel.value ;
+            shuttleReady = false;
+         }
+         if(Number(cargoMass.value)>100000){
+            document.getElementById("cargoMass").innerHTML = "Cargo Mass too large. It should be > 100000, it is: "+cargoMass.value;
+            shuttleReady = false;
+         }
+         if(shuttleReady==false){
+            document.getElementById("launchStatus").innerHTML = "Shuttle NOT ready for Launch";
+            document.getElementById("launchStatus").style.color = "red";
+            document.getElementById("faultyItems").style.visibility = "visible";
+         }
+         else if(shuttleReady == true){
+            document.getElementById("launchStatus").style.color = "green";
+            document.getElementById("launchStatus").innerHTML = "Shuttle is ready for Launch";
+         }
+
       }
       //Verifies if Shuttle is ready for takeoff from values
-      let shuttleReady = true;
-      document.getElementById("pilotStatus").innerHTML = "Pilot "+pilotName.value+" is ready for Launch.";
-      document.getElementById("copilotStatus").innerHTML = "Copilot "+copilotName.value+" is ready for Launch.";
-      
-      if(Number(fuelLevel.value)<10000){
-         document.getElementById("fuelStatus").innerHTML = "Fuel Level too low for launch. It should be > 10000, it is: "+fuelLevel.value ;
-         shuttleReady = false;
-      }
-      if(Number(cargoMass.value)>100000){
-         document.getElementById("cargoMass").innerHTML = "Cargo Mass too large. It should be > 100000, it is: "+cargoMass.value;
-         shuttleReady = false;
-      }
-      if(shuttleReady==false){
-         document.getElementById("launchStatus").innerHTML = "Shuttle NOT ready for Launch";
-         document.getElementById("launchStatus").style.color = "red";
-         document.getElementById("faultyItems").style.visibility = "visible";
-      }
-      else if(shuttleReady == true){
-         document.getElementById("launchStatus").innerHTML = "Shuttle is ready for Launch";
-      }
-
-      event.preventDefault();
    })
 
    //Fetch data from JSON file using an API
